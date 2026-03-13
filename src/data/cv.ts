@@ -88,12 +88,12 @@ export const skills = [
 
 export const publications = [
 	{
-		title: '',
-		authors: '',
-		journal: '',
-		time: '',
-		link: '',
-		abstract: '',
+		title: '‘The internet is in the satellites!’: A systematic review of 3–15-year-olds’ conceptions about the internet',
+		authors: 'Cyril Brom, Anna Yaghobová, Anna Drobná, Marek Urban',
+		journal: 'Education and Information Technologies',
+		time: '2023',
+		link: 'https://link.springer.com/article/10.1007/s10639-023-11775-9',
+		abstract: 'Children aged 3–15 frequently use internet-enabled technologies for leisure and educational purposes, yet they have limited knowledge about how the internet works. Literature also indicates that children possess varied and often contradictory internet-related ideas, which have not yet been systematized. This systematic review, drawing from 27 mixed-methods and qualitative studies (N = 2,214) from the last two decades (2002 – 2022), organizes these ideas through a thematic analysis with a specific focus on the age when individual child conceptions start to appear at the earliest. The findings are interpreted through the lenses of a Vygotskian framework. The results highlight 60 conceptions concerning general perceptions of the internet, internet infrastructure, and dataflow. Children appear to understand the internet primarily through their personal experiences. Perception of the internet as online activities is dominant in younger children, but also present among older ones. Children in all age groups are confused about what Wi-Fi really is; some equate it to the internet, others to the ‘Wi-Fi box’ (Wi-Fi router). The most knowledgeable older children view the internet as a global network with a complex internal, but only vaguely understood, structure. Typical reasoning among older children about the internet’s structure includes satellites, central computers or central towers. Only expert children know about distributed, server-like storage. These results imply that children at the K-8 level need to be familiarized gradually with how the internet works, but teaching them this topic may prove to be challenging. This review also highlights the limitations of existing literature and presents suggestions for future research and designing technology-based curricula.',
 	},
 	// {
 	// 	title: 'The Radiation of Uranium Compounds',
