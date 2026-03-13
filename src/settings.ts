@@ -1,8 +1,8 @@
 export const profile = {
-	fullName: 'Your Name',
-	title: '',
-	institute: '',
-	author_name: '', // Author name to be highlighted in the papers section
+	fullName: 'Anna Yaghobová',
+	title: 'Mgr.',
+	institute: 'Faculty of Mathematics and Physics',
+	author_name: 'Anna Yaghobová', // Author name to be highlighted in the papers section
 	research_areas: [
 		// { title: 'Physics', description: 'Brief description of the research interest', field: 'physics' },
 	],
@@ -10,16 +10,16 @@ export const profile = {
 
 // Set equal to an empty string to hide the icon that you don't want to display
 export const social = {
-	email: '',
+	email: 'anna.yaghobova@matfyz.cuni.cz',
 	linkedin: '',
 	x: 'https://www.x.com/',
 	bluesky: '',
 	github: '',
 	gitlab: '',
-	scholar: '',
+	scholar: 'https://scholar.google.com/citations?user=30ksXzcAAAAJ&hl=cs',
 	inspire: '',
 	arxiv: '',
-	orcid: '',
+	orcid: 'https://orcid.org/0000-0002-2102-7515',
 }
 
 export const template = {
