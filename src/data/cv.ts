@@ -69,8 +69,16 @@ export const education = [
 
 export const skills = [
 	{
-		title: '',
-		description: '',
+		title: 'Research Methods',
+		description: 'Qualitative research. Thematic coding. Interview-based data collection. Educational research.',
+	},
+	{
+		title: 'Teaching & Learning Design',
+		description: 'Lesson design. Instructional scaffolding. Formative assessment. Classroom-based evaluation.',
+	},
+	{
+		title: 'Languages',
+		description: 'Czech (native). English (C1). German (passive). Spanish (passive).',
 	},
 	// {
 	// 	title: 'Experimental Techniques',
