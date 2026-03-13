@@ -1,6 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import { experiences, education, skills, publications } from '../data/cv'
+import { experiences, education, skills, publications, grants, researchStays} from '../data/cv'
 import CvTimeline from '@/components/ui/CvTimeline.astro'
 
 import type { Experience, Education, Publication } from '../types/cv'
@@ -10,6 +10,8 @@ import PublicationsList from '@/components/ui/PublicationsList.astro'
 let orderedExperiences: Experience[] = []
 let orderedEducations: Education[] = []
 let orderedPublications: Publication[] = []
+let orderedGrants = []
+let orderedResearchStays = []
 
 const orderElement = <T extends { time: string }>(a: T, b: T) => {
   const presentValues = ['present', 'now', 'current', 'today']
@@ -40,6 +42,18 @@ if (education.length > 0) {
 
 if (publications.length > 0) {
 	orderedPublications = publications.sort((a, b) => {
+		return orderElement(a, b)
+	})
+}
+
+if (grants.length > 0) {
+	orderedGrants = grants.sort((a, b) => {
+		return orderElement(a, b)
+	})
+}
+
+if (researchStays.length > 0) {
+	orderedResearchStays = researchStays.sort((a, b) => {
 		return orderElement(a, b)
 	})
 }
@@ -86,4 +100,25 @@ if (publications.length > 0) {
 			</section>
 		)
 	}
+{
+	orderedGrants.length > 0 && (
+		<section class='mb-12'>
+			<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
+				Grants
+			</h2>
+			<CvTimeline elements={orderedGrants} colored={true} />
+		</section>
+	)
+}
+
+{
+	orderedResearchStays.length > 0 && (
+		<section class='mb-12'>
+			<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
+				Research Stays
+			</h2>
+			<CvTimeline elements={orderedResearchStays} colored={true} />
+		</section>
+	)
+}
 </Layout>
