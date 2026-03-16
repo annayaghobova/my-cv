@@ -92,14 +92,6 @@ if (researchStays.length > 0) {
 			</section>
 		)
 	}
-
-	{
-		skills.length > 0 && (
-			<section class='mb-12'>
-				<List listTitle='Skills' listItems={skills}/>
-			</section>
-		)
-	}
 {
 	orderedGrants.length > 0 && (
 		<section class='mb-12'>
@@ -121,4 +113,11 @@ if (researchStays.length > 0) {
 		</section>
 	)
 }
+	{
+		skills.length > 0 && (
+			<section class='mb-12'>
+				<List listTitle='Skills' listItems={skills}/>
+			</section>
+		)
+	}
 </Layout>
