@@ -39,7 +39,7 @@ export const experiences = [
 export const education = [
 	{
 		school: 'Faculty of Mathematics and Physics, Charles University',
-		time: '2021-present',
+		time: '2021-2026',
 		degree: 'Ph.D.',
 		location: 'Prague, CZ',
 		description: 'General Questions of Mathematics and Computer Science',
