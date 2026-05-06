@@ -30,12 +30,12 @@ const sortedYears = Object.keys(papersByYear).sort(
           <section>
             <h2 class="text-2xl font-bold mb-4 border-b pb-2">{year}</h2>
 
-            <div class="space-y-4">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
               {
                 papersByYear[year].map((paper) => (
                   <div class="card bg-base-200">
-                    <div class="card-body p-5">
-                      <h3 class="text-lg font-semibold leading-snug mb-1">
+                    <div class="card-body p-4">
+                      <h3 class="text-base font-semibold leading-snug mb-1">
                         <a
                           href={paper.link}
                           target="_blank"
@@ -46,15 +46,15 @@ const sortedYears = Object.keys(papersByYear).sort(
                         </a>
                       </h3>
 
-                      <p class="text-sm mb-1">
+                      <p class="text-xs mb-1 leading-snug">
                         <span set:html={highlightAuthor(paper.authors)} />
                       </p>
 
-                      <p class="text-sm text-base-content/70">
+                      <p class="text-xs text-base-content/70 leading-snug">
                         <span class="italic">{paper.journal}</span>
                       </p>
 
-                      <div class="card-actions justify-end mt-3">
+                      <div class="card-actions justify-end mt-2">
                         <a
                           href={paper.link}
                           target="_blank"
