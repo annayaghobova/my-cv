@@ -2,9 +2,25 @@
 import Layout from "@/layouts/Layout.astro";
 import { publications } from "@/data/cv";
 import { highlightAuthor } from "@/lib/utils";
-import {template} from "@/settings";
+import { template } from "@/settings";
 
-const ALL_PAPERS = publications; // This will be replaced with dynamic data later
+const ALL_PAPERS = publications;
+
+const PAPERS_PER_PAGE = 5;
+
+const currentPage = Number(Astro.url.searchParams.get("page") || "1");
+const totalPages = Math.ceil(ALL_PAPERS.length / PAPERS_PER_PAGE);
+
+const safeCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
+
+const startIndex = (safeCurrentPage - 1) * PAPERS_PER_PAGE;
+const endIndex = startIndex + PAPERS_PER_PAGE;
+
+const visiblePapers = ALL_PAPERS.slice(startIndex, endIndex);
+
+const getPageLink = (page: number) => {
+  return `${template.base}papers/?page=${page}`;
+};
 ---
 
 <Layout title="Papers">
@@ -13,24 +29,40 @@ const ALL_PAPERS = publications; // This will be replaced with dynamic data late
 
     <div class="space-y-8">
       {
-        ALL_PAPERS.map((paper) => (
+        visiblePapers.map((paper) => (
           <div class="card bg-base-200">
             <div class="card-body">
               <h2 class="card-title text-xl">
-                <a href={template.base + paper.link} class="hover:text-accent">
+                <a
+                  href={paper.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:text-accent"
+                >
                   {paper.title}
                 </a>
               </h2>
+
               <p class="text-base mb-2">
                 <span class="font-medium">Authors:</span>{" "}
                 <span set:html={highlightAuthor(paper.authors)} />
               </p>
+
               <p class="text-sm mb-3">
                 <span class="italic">{paper.journal}</span> • {paper.time}
               </p>
-              <p class="text-sm text-base-content/80">{paper.abstract}</p>
+
+              {paper.abstract && (
+                <p class="text-sm text-base-content/80">{paper.abstract}</p>
+              )}
+
               <div class="card-actions justify-end mt-4">
-                <a href={paper.link} class="btn btn-sm btn-secondary text-secondary-content">
+                <a
+                  href={paper.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-sm btn-secondary text-secondary-content"
+                >
                   Read Paper
                 </a>
               </div>
@@ -40,14 +72,39 @@ const ALL_PAPERS = publications; // This will be replaced with dynamic data late
       }
     </div>
 
-    <div class="flex justify-center mt-8">
-      <div class="join">
-        <button class="join-item btn btn-sm">«</button>
-        <button class="join-item btn btn-sm">1</button>
-        <button class="join-item btn btn-sm btn-active">2</button>
-        <button class="join-item btn btn-sm">3</button>
-        <button class="join-item btn btn-sm">»</button>
+    {totalPages > 1 && (
+      <div class="flex justify-center mt-8">
+        <div class="join">
+          <a
+            href={getPageLink(Math.max(safeCurrentPage - 1, 1))}
+            class={`join-item btn btn-sm ${safeCurrentPage === 1 ? "btn-disabled" : ""}`}
+          >
+            «
+          </a>
+
+          {
+            Array.from({ length: totalPages }, (_, index) => {
+              const page = index + 1;
+
+              return (
+                <a
+                  href={getPageLink(page)}
+                  class={`join-item btn btn-sm ${page === safeCurrentPage ? "btn-active" : ""}`}
+                >
+                  {page}
+                </a>
+              );
+            })
+          }
+
+          <a
+            href={getPageLink(Math.min(safeCurrentPage + 1, totalPages))}
+            class={`join-item btn btn-sm ${safeCurrentPage === totalPages ? "btn-disabled" : ""}`}
+          >
+            »
+          </a>
+        </div>
       </div>
-    </div>
+    )}
   </div>
 </Layout>
