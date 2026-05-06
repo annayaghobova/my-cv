@@ -21,9 +21,9 @@ const getPageLink = (page: number) => {
       {
         ALL_PAPERS.map((paper, index) => (
           <div
-            class="card bg-base-200 paper-card"
-            data-index={index}
-          >
+  class="card bg-base-200 paper-card"
+  data-index={index}
+>
             <div class="card-body">
               <h2 class="card-title text-xl">
                 <a
@@ -104,61 +104,63 @@ const getPageLink = (page: number) => {
     )}
   </div>
 
-  <script define:vars={{ PAPERS_PER_PAGE, totalPages, base: template.base }}>
-    function showPage(page) {
-      const safePage = Math.min(Math.max(page, 1), totalPages);
+ <script is:inline define:vars={{ PAPERS_PER_PAGE, totalPages, base: template.base }}>
+  function showPage(page) {
+    const safePage = Math.min(Math.max(page, 1), totalPages);
 
-      const cards = document.querySelectorAll(".paper-card");
+    const cards = document.querySelectorAll(".paper-card");
 
-      cards.forEach((card) => {
-        const index = Number(card.dataset.index);
-        const start = (safePage - 1) * PAPERS_PER_PAGE;
-        const end = start + PAPERS_PER_PAGE;
+    cards.forEach((card) => {
+      const index = Number(card.dataset.index);
+      const start = (safePage - 1) * PAPERS_PER_PAGE;
+      const end = start + PAPERS_PER_PAGE;
 
-        if (index >= start && index < end) {
-          card.classList.remove("hidden");
-        } else {
-          card.classList.add("hidden");
-        }
-      });
+      if (index >= start && index < end) {
+        card.style.display = "";
+      } else {
+        card.style.display = "none";
+      }
+    });
 
-      const links = document.querySelectorAll(".pagination-link");
+    const links = document.querySelectorAll(".pagination-link");
 
-      links.forEach((link) => {
-        link.classList.remove("btn-active", "btn-disabled");
+    links.forEach((link) => {
+      link.classList.remove("btn-active", "btn-disabled");
 
-        const pageValue = link.dataset.page;
+      const pageValue = link.dataset.page;
 
-        if (Number(pageValue) === safePage) {
-          link.classList.add("btn-active");
-        }
-
-        if (pageValue === "prev" && safePage === 1) {
-          link.classList.add("btn-disabled");
-        }
-
-        if (pageValue === "next" && safePage === totalPages) {
-          link.classList.add("btn-disabled");
-        }
-      });
-
-      const prevLink = document.querySelector('[data-page="prev"]');
-      const nextLink = document.querySelector('[data-page="next"]');
-
-      if (prevLink) {
-        prevLink.href = `${base}/papers/?page=${Math.max(safePage - 1, 1)}`;
+      if (Number(pageValue) === safePage) {
+        link.classList.add("btn-active");
       }
 
-      if (nextLink) {
-        nextLink.href = `${base}/papers/?page=${Math.min(safePage + 1, totalPages)}`;
+      if (pageValue === "prev" && safePage === 1) {
+        link.classList.add("btn-disabled");
       }
+
+      if (pageValue === "next" && safePage === totalPages) {
+        link.classList.add("btn-disabled");
+      }
+    });
+
+    const prevLink = document.querySelector('[data-page="prev"]');
+    const nextLink = document.querySelector('[data-page="next"]');
+
+    if (prevLink) {
+      prevLink.href = `${base}/papers/?page=${Math.max(safePage - 1, 1)}`;
     }
 
+    if (nextLink) {
+      nextLink.href = `${base}/papers/?page=${Math.min(safePage + 1, totalPages)}`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const currentPage = Number(params.get("page") || "1");
 
     showPage(currentPage);
-  </script>
+  });
+</script>
 </Layout>                  href={paper.link}
                   target="_blank"
                   rel="noopener noreferrer"
