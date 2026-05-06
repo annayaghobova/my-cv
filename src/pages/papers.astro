@@ -2,28 +2,18 @@
 import Layout from "@/layouts/Layout.astro";
 import { publications } from "@/data/cv";
 import { highlightAuthor } from "@/lib/utils";
-import { template } from "@/settings";
 
 const ALL_PAPERS = publications;
-const PAPERS_PER_PAGE = 5;
-const totalPages = Math.ceil(ALL_PAPERS.length / PAPERS_PER_PAGE);
-
-const getPageLink = (page: number) => {
-  return `${template.base}/papers/?page=${page}`;
-};
 ---
 
 <Layout title="Papers">
   <div class="prose max-w-none">
     <h1 class="text-3xl font-bold mb-8">Publications</h1>
 
-    <div class="space-y-8" id="papers-list">
+    <div class="space-y-8">
       {
-        ALL_PAPERS.map((paper, index) => (
-          <div
-  class="card bg-base-200 paper-card"
-  data-index={index}
->
+        ALL_PAPERS.map((paper) => (
+          <div class="card bg-base-200">
             <div class="card-body">
               <h2 class="card-title text-xl">
                 <a
@@ -46,7 +36,9 @@ const getPageLink = (page: number) => {
               </p>
 
               {paper.abstract && (
-                <p class="text-sm text-base-content/80">{paper.abstract}</p>
+                <p class="text-sm text-base-content/80">
+                  {paper.abstract}
+                </p>
               )}
 
               <div class="card-actions justify-end mt-4">
@@ -64,174 +56,5 @@ const getPageLink = (page: number) => {
         ))
       }
     </div>
-
-    {totalPages > 1 && (
-      <div class="flex justify-center mt-8">
-        <div class="join">
-          <a
-            href={getPageLink(1)}
-            class="join-item btn btn-sm pagination-link"
-            data-page="prev"
-          >
-            «
-          </a>
-
-          {
-            Array.from({ length: totalPages }, (_, index) => {
-              const page = index + 1;
-
-              return (
-                <a
-                  href={getPageLink(page)}
-                  class="join-item btn btn-sm pagination-link"
-                  data-page={page}
-                >
-                  {page}
-                </a>
-              );
-            })
-          }
-
-          <a
-            href={getPageLink(totalPages)}
-            class="join-item btn btn-sm pagination-link"
-            data-page="next"
-          >
-            »
-          </a>
-        </div>
-      </div>
-    )}
-  </div>
-
- <script is:inline define:vars={{ PAPERS_PER_PAGE, totalPages, base: template.base }}>
-  function showPage(page) {
-    const safePage = Math.min(Math.max(page, 1), totalPages);
-
-    const cards = document.querySelectorAll(".paper-card");
-
-    cards.forEach((card) => {
-      const index = Number(card.dataset.index);
-      const start = (safePage - 1) * PAPERS_PER_PAGE;
-      const end = start + PAPERS_PER_PAGE;
-
-      if (index >= start && index < end) {
-        card.style.display = "";
-      } else {
-        card.style.display = "none";
-      }
-    });
-
-    const links = document.querySelectorAll(".pagination-link");
-
-    links.forEach((link) => {
-      link.classList.remove("btn-active", "btn-disabled");
-
-      const pageValue = link.dataset.page;
-
-      if (Number(pageValue) === safePage) {
-        link.classList.add("btn-active");
-      }
-
-      if (pageValue === "prev" && safePage === 1) {
-        link.classList.add("btn-disabled");
-      }
-
-      if (pageValue === "next" && safePage === totalPages) {
-        link.classList.add("btn-disabled");
-      }
-    });
-
-    const prevLink = document.querySelector('[data-page="prev"]');
-    const nextLink = document.querySelector('[data-page="next"]');
-
-    if (prevLink) {
-      prevLink.href = `${base}/papers/?page=${Math.max(safePage - 1, 1)}`;
-    }
-
-    if (nextLink) {
-      nextLink.href = `${base}/papers/?page=${Math.min(safePage + 1, totalPages)}`;
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const params = new URLSearchParams(window.location.search);
-    const currentPage = Number(params.get("page") || "1");
-
-    showPage(currentPage);
-  });
-</script>
-</Layout>                  href={paper.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="hover:text-accent"
-                >
-                  {paper.title}
-                </a>
-              </h2>
-
-              <p class="text-base mb-2">
-                <span class="font-medium">Authors:</span>{" "}
-                <span set:html={highlightAuthor(paper.authors)} />
-              </p>
-
-              <p class="text-sm mb-3">
-                <span class="italic">{paper.journal}</span> • {paper.time}
-              </p>
-
-              {paper.abstract && (
-                <p class="text-sm text-base-content/80">{paper.abstract}</p>
-              )}
-
-              <div class="card-actions justify-end mt-4">
-                <a
-                  href={paper.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn-sm btn-secondary text-secondary-content"
-                >
-                  Read Paper
-                </a>
-              </div>
-            </div>
-          </div>
-        ))
-      }
-    </div>
-
-    {totalPages > 1 && (
-      <div class="flex justify-center mt-8">
-        <div class="join">
-          <a
-            href={getPageLink(Math.max(safeCurrentPage - 1, 1))}
-            class={`join-item btn btn-sm ${safeCurrentPage === 1 ? "btn-disabled" : ""}`}
-          >
-            «
-          </a>
-
-          {
-            Array.from({ length: totalPages }, (_, index) => {
-              const page = index + 1;
-
-              return (
-                <a
-                  href={getPageLink(page)}
-                  class={`join-item btn btn-sm ${page === safeCurrentPage ? "btn-active" : ""}`}
-                >
-                  {page}
-                </a>
-              );
-            })
-          }
-
-          <a
-            href={getPageLink(Math.min(safeCurrentPage + 1, totalPages))}
-            class={`join-item btn btn-sm ${safeCurrentPage === totalPages ? "btn-disabled" : ""}`}
-          >
-            »
-          </a>
-        </div>
-      </div>
-    )}
   </div>
 </Layout>
