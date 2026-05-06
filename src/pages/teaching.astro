@@ -1,0 +1,62 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+const courses = [
+  {
+    title: "Název předmětu 1",
+    year: "2025/2026",
+    description: "Brief course description.",
+    moodle: "https://dl1.cuni.cz/course/view.php?id=XXXXX",
+  },
+  {
+    title: "Název předmětu 2",
+    year: "2025/2026",
+    description: "Brief course description.",
+    moodle: "https://dl1.cuni.cz/course/view.php?id=YYYYY",
+  },
+];
+---
+
+<Layout title="Teaching">
+  <div class="prose max-w-none">
+    <h1 class="text-3xl font-bold mb-8">Teaching</h1>
+
+    <p class="mb-8">
+      I teach courses at Charles University. Detailed information, course
+      materials, assignments, and announcements are available in Moodle.
+    </p>
+
+    <div class="space-y-6">
+      {
+        courses.map((course) => (
+          <div class="card bg-base-200">
+            <div class="card-body">
+              <h2 class="card-title text-xl">{course.title}</h2>
+
+              <p class="text-sm text-base-content/70">
+                <span class="font-medium">Academic year:</span> {course.year}
+              </p>
+
+              {course.description && (
+                <p class="text-sm text-base-content/80">
+                  {course.description}
+                </p>
+              )}
+
+              <div class="card-actions justify-end mt-4">
+                <a
+                  href={course.moodle}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-sm btn-secondary text-secondary-content"
+                >
+                  Open in Moodle
+                </a>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Layout>
