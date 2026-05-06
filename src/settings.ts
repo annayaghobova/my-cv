@@ -15,7 +15,7 @@ export const profile = {
     field: 'psychology',
   },
   {
-    title: 'Internet Principles',
+    title: 'Instructional materials',
     description: 'Design and evaluation of instructional materials for teaching about digital systems and technologies.',
     field: 'technology',
   },
@@ -34,6 +34,8 @@ export const social = {
 	inspire: '',
 	arxiv: '',
 	orcid: 'https://orcid.org/0000-0002-2102-7515',
+	instagram: 'https://www.instagram.com/annayaghobova/',
+	wos: 'https://www.webofscience.com/wos/author/record/GZO-6590-2022'
 }
 
 export const template = {
