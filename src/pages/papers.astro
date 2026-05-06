@@ -19,7 +19,7 @@ const endIndex = startIndex + PAPERS_PER_PAGE;
 const visiblePapers = ALL_PAPERS.slice(startIndex, endIndex);
 
 const getPageLink = (page: number) => {
-  return `${Astro.url.pathname}?page=${page}`;
+  return `${template.base}/papers/?page=${page}`;
 };
 ---
 
