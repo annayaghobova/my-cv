@@ -89,7 +89,7 @@ export const skills = [
 export const publications = [
 	{
 		title: 'Principles of Computers - Model Lessons for Lower Secondary School: Experience Report',
-		authors: 'Cyril Brom,Anna Yaghobová, Anna Drobná, Marek Urban, Daniel Šťastný, Andrea diSessa',
+		authors: 'Cyril Brom, Anna Yaghobová, Anna Drobná, Marek Urban, Daniel Šťastný, Andrea diSessa',
 		journal: 'ISSEP 2025 Springer Proceedings',
 		time: '2025',
 		link: 'https://link.springer.com/chapter/10.1007/978-3-032-01222-7_4',
@@ -105,7 +105,7 @@ export const publications = [
 	},
 	{
 		title: 'Learning about abstract systems: Understanding childrens journey in grasping internet principles across age groups in a mixed-methods experimental study',
-		authors: 'Cyril Brom,Anna Yaghobová, Anna Drobná, Marek Urban, Daniel Šťastný, Andrea diSessa',
+		authors: 'Cyril Brom, Anna Yaghobová, Anna Drobná, Marek Urban, Daniel Šťastný, Andrea diSessa',
 		journal: 'Computers in Human Behavior',
 		time: '2025',
 		link: 'https://doi.org/10.1016/j.chb.2025.108602',
