@@ -4,8 +4,22 @@ export const profile = {
 	institute: 'Faculty of Mathematics and Physics',
 	author_name: 'Anna Yaghobová', // Author name to be highlighted in the papers section
 	research_areas: [
-		// { title: 'Physics', description: 'Brief description of the research interest', field: 'physics' },
-	],
+  {
+    title: 'Computing Education',
+    description: 'Research on teaching and learning core concepts of computer science, with a focus on lower secondary education.',
+    field: 'education',
+  },
+  {
+    title: 'Students’ Preconceptions',
+    description: 'Investigation of students’ everyday ideas and understanding of digital technologies, especially the internet and computer systems.',
+    field: 'psychology',
+  },
+  {
+    title: 'Internet Principles',
+    description: 'Design and evaluation of instructional materials for teaching about digital systems and technologies.',
+    field: 'technology',
+  },
+],
 }
 
 // Set equal to an empty string to hide the icon that you don't want to display
