@@ -94,4 +94,15 @@ const calculatedContainerSize = activeSocial.length <= 5 ? 'size-12' : activeSoc
     WoS
   </a>
 }
+<!-- ResearchGate -->
+
+{social.researchgate !== '' &&
+
+  <a href={social.researchgate} target="_blank" rel="noopener noreferrer" class={`${calculatedContainerSize} inline-flex items-center justify-center rounded-xl hover:bg-primary/20 transition-all duration-300`}>
+
+    <ResearchGate class={calculatedIconSize} fill="currentColor" />
+
+  </a>
+
+}
 </div>
