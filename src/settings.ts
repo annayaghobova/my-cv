@@ -1,7 +1,7 @@
 export const profile = {
 	fullName: 'Anna Yaghobová',
 	title: 'Ph. D.',
-	institute: 'Faculty of Mathematics and Physics',
+	institute: 'Faculty of Mathematics and Physics, Charles University',
 	author_name: 'Anna Yaghobová', // Author name to be highlighted in the papers section
 	research_areas: [
   {
