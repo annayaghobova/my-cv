@@ -1,57 +1,40 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import List from "@/components/ui/List.astro";
+import { publications } from "@/data/cv";
+import { highlightAuthor } from "@/lib/utils";
+
+const papersByYear = publications.reduce((groups, paper) => {
+  const year = paper.time;
+
+  if (!groups[year]) {
+    groups[year] = [];
+  }
+
+  groups[year].push(paper);
+
+  return groups;
+}, {} as Record<string, typeof publications>);
+
+const sortedYears = Object.keys(papersByYear).sort(
+  (a, b) => Number(b) - Number(a)
+);
 ---
 
-<Layout title="Research | Anna Yaghobová">
+<Layout title="Papers">
   <div class="prose max-w-none">
-    <h1 class="text-3xl font-bold mb-8">Research Statement</h1>
+    <h1 class="text-3xl font-bold mb-8">Publications</h1>
 
-    <div class="mb-12">
-      <p class="text-lg mb-6">
-        My research focuses on students’ preconceptions about digital systems and on connecting these findings with school practice. I am particularly interested in how learners understand abstract computing concepts, such as the internet, computer systems, hardware components, and operating systems, and how these ideas can inform the design of meaningful teaching materials.
-      </p>
+    <div class="space-y-10">
+      {
+        sortedYears.map((year) => (
+          <section>
+            <h2 class="text-2xl font-bold mb-4 border-b pb-2">{year}</h2>
 
-      <p class="text-lg mb-6">
-        In my work, I combine empirical research on students’ thinking with the development and evaluation of instructional materials for lower secondary education. My aim is to support teaching that builds on students’ existing ideas, addresses common misconceptions, and helps teachers make complex digital technology topics accessible in the classroom.
-      </p>
-    </div>
-
-    <List listTitle="Current Projects" listItems={[
-      {
-        title: "Project title",
-        type: "Project type, role, years",
-        link: "",
-        linkname: "",
-        description: "Short description of the project. Replace this placeholder with information about an ongoing research project, dissertation work, collaboration, grant, or development of teaching materials."
-      },
-      {
-        title: "Project title",
-        type: "Project type, role, years",
-        link: "",
-        linkname: "",
-        description: "Short description of another current project. You can duplicate or remove these items as needed."
-      }
-    ]} />
-
-    <List listTitle="Past Projects" listItems={[
-      {
-        title: "Project title",
-        type: "Project type, role, years",
-        link: "",
-        linkname: "",
-        description: "Short description of a completed project. Replace this placeholder with information about a finished research project, thesis, publication-related project, or completed teaching-material development."
-      },
-      {
-        title: "Project title",
-        type: "Project type, role, years",
-        link: "",
-        linkname: "",
-        description: "Short description of another past project. You can duplicate or remove these items as needed."
-      }
-    ]} />
-  </div>
-</Layout>                    <div class="card-body p-4">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+              {
+                papersByYear[year].map((paper) => (
+                  <div class="card bg-base-200">
+                    <div class="card-body p-4">
                       <h3 class="text-base font-semibold leading-snug mb-1">
                         <a
                           href={paper.link}
