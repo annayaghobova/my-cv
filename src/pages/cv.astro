@@ -1,20 +1,14 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import {
-  experiences,
-  education,
-  skills,
-  publications,
-  grants,
-  researchStays,
-} from '../data/cv'
+import { experiences, education, skills, publications, grants, researchStays } from '../data/cv'
+import CvTimeline from '@/components/ui/CvTimeline.astro'
 
 import type { Experience, Education, Publication } from '../types/cv'
-import CvTimeline from '@/components/ui/CvTimeline.astro'
 import List from '@/components/ui/List.astro'
 
 let orderedExperiences: Experience[] = []
 let orderedEducations: Education[] = []
+let orderedPublications: Publication[] = []
 let orderedGrants = []
 let orderedResearchStays = []
 
@@ -47,6 +41,12 @@ if (education.length > 0) {
   })
 }
 
+if (publications.length > 0) {
+  orderedPublications = publications.sort((a, b) => {
+    return orderElement(a, b)
+  })
+}
+
 if (grants.length > 0) {
   orderedGrants = grants.sort((a, b) => {
     return orderElement(a, b)
@@ -59,20 +59,18 @@ if (researchStays.length > 0) {
   })
 }
 
-const latestPublications = publications.slice(0, 5).map((publication: Publication) => {
-  return {
-    title: publication.title,
-    type: `${publication.journal} (${publication.time})`,
-    link: publication.link,
-    linkname:
-      publication.category === 'presentation'
-        ? 'View presentation'
-        : publication.category === 'poster'
-          ? 'View poster'
-          : 'Read paper',
-    description: publication.authors,
-  }
-})
+const latestPublications = publications.slice(0, 5).map((publication) => ({
+  title: publication.title,
+  type: `${publication.journal} (${publication.time})`,
+  link: publication.link,
+  linkname:
+    publication.category === 'presentation'
+      ? 'View presentation'
+      : publication.category === 'poster'
+        ? 'View poster'
+        : 'Read paper',
+  description: publication.authors,
+}))
 ---
 
 <Layout title="CV">
