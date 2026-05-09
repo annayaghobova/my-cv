@@ -1,123 +1,124 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import { experiences, education, skills, publications, grants, researchStays} from '../data/cv'
-import CvTimeline from '@/components/ui/CvTimeline.astro'
+import {
+  experiences,
+  education,
+  skills,
+  publications,
+  grants,
+  researchStays,
+} from '../data/cv'
 
 import type { Experience, Education, Publication } from '../types/cv'
+import CvTimeline from '@/components/ui/CvTimeline.astro'
 import List from '@/components/ui/List.astro'
-import PublicationsList from '@/components/ui/PublicationsList.astro'
 
 let orderedExperiences: Experience[] = []
 let orderedEducations: Education[] = []
-let orderedPublications: Publication[] = []
 let orderedGrants = []
 let orderedResearchStays = []
 
 const orderElement = <T extends { time: string }>(a: T, b: T) => {
   const presentValues = ['present', 'now', 'current', 'today']
+
   if (
-			presentValues.includes(
-				(a['time'] as string)?.split(' - ')[1]?.toLowerCase()
-			)
-		) {
-			// If the date is 'present', it should be the first element
-			return -1
-		}
-		const dateA = new Date((a['time'] as string)?.split(' - ')[1])
-		const dateB = new Date((b['time'] as string)?.split(' - ')[1])
-		return dateB.getTime() - dateA.getTime()
+    presentValues.includes(
+      (a['time'] as string)?.split(' - ')[1]?.toLowerCase()
+    )
+  ) {
+    return -1
+  }
+
+  const dateA = new Date((a['time'] as string)?.split(' - ')[1])
+  const dateB = new Date((b['time'] as string)?.split(' - ')[1])
+
+  return dateB.getTime() - dateA.getTime()
 }
 
 if (experiences.length > 0) {
-	orderedExperiences = experiences.sort((a, b) => {
-		return orderElement(a, b)
-	})
+  orderedExperiences = experiences.sort((a, b) => {
+    return orderElement(a, b)
+  })
 }
 
 if (education.length > 0) {
-	orderedEducations = education.sort((a, b) => {
-		return orderElement(a, b)
-	})
-}
-
-if (publications.length > 0) {
-	orderedPublications = publications.sort((a, b) => {
-		return orderElement(a, b)
-	})
+  orderedEducations = education.sort((a, b) => {
+    return orderElement(a, b)
+  })
 }
 
 if (grants.length > 0) {
-	orderedGrants = grants.sort((a, b) => {
-		return orderElement(a, b)
-	})
+  orderedGrants = grants.sort((a, b) => {
+    return orderElement(a, b)
+  })
 }
 
 if (researchStays.length > 0) {
-	orderedResearchStays = researchStays.sort((a, b) => {
-		return orderElement(a, b)
-	})
+  orderedResearchStays = researchStays.sort((a, b) => {
+    return orderElement(a, b)
+  })
 }
+
+const latestPublications = publications.slice(0, 5).map((publication: Publication) => {
+  return {
+    title: publication.title,
+    type: `${publication.journal} (${publication.time})`,
+    link: publication.link,
+    linkname:
+      publication.category === 'presentation'
+        ? 'View presentation'
+        : publication.category === 'poster'
+          ? 'View poster'
+          : 'Read paper',
+    description: publication.authors,
+  }
+})
 ---
 
-<Layout>
-	{
-		orderedEducations.length > 0 && (
-			<section class='mb-12'>
-				<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
-					Education
-				</h2>
-				<CvTimeline elements={orderedEducations} colored={true} />
-			</section>
-		)
-	}
+<Layout title="CV">
+  <div class="prose max-w-none">
+    <h1 class="text-3xl font-bold mb-8">CV</h1>
 
-	{
-		orderedExperiences.length > 0 && (
-			<section class='mb-12'>
-				<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
-					Experiences
-				</h2>
-				<CvTimeline elements={orderedExperiences} colored={true} />
-			</section>
-		)
-	}
+    {orderedExperiences.length > 0 && (
+      <CvTimeline
+        timelineTitle="Experience"
+        timelineItems={orderedExperiences}
+      />
+    )}
 
-	{
-		orderedPublications.length > 0 && (
-			<section class='mb-12'>
-				<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
-					Last publications
-				</h2>
-				<PublicationsList elements={orderedPublications}/>
-			</section>
-		)
-	}
-{
-	orderedGrants.length > 0 && (
-		<section class='mb-12'>
-			<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
-				Grants
-			</h2>
-			<CvTimeline elements={orderedGrants} colored={true} />
-		</section>
-	)
-}
+    {orderedGrants.length > 0 && (
+      <CvTimeline
+        timelineTitle="Grants"
+        timelineItems={orderedGrants}
+      />
+    )}
 
-{
-	orderedResearchStays.length > 0 && (
-		<section class='mb-12'>
-			<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
-				Research Stays
-			</h2>
-			<CvTimeline elements={orderedResearchStays} colored={true} />
-		</section>
-	)
-}
-	{
-		skills.length > 0 && (
-			<section class='mb-12'>
-				<List listTitle='Skills' listItems={skills}/>
-			</section>
-		)
-	}
+    {latestPublications.length > 0 && (
+      <List
+        listTitle="Latest Publications"
+        listItems={latestPublications}
+      />
+    )}
+
+    {orderedResearchStays.length > 0 && (
+      <CvTimeline
+        timelineTitle="Research Stays"
+        timelineItems={orderedResearchStays}
+      />
+    )}
+
+    {orderedEducations.length > 0 && (
+      <CvTimeline
+        timelineTitle="Education"
+        timelineItems={orderedEducations}
+      />
+    )}
+
+    {skills.length > 0 && (
+      <List
+        listTitle="Skills"
+        listItems={skills}
+      />
+    )}
+  </div>
 </Layout>
