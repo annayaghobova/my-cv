@@ -1,11 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { profile } from "@/settings";
-import BetterIcon from "@/components/ui/BetterIcon.astro";
 import List from "@/components/ui/List.astro";
-import {RESEARCH_ICONS} from "@/data/researchIcons";
-
-const { research_areas } = profile;
 ---
 
 <Layout title="Research | Anna Yaghobová">
@@ -14,27 +9,50 @@ const { research_areas } = profile;
 
     <div class="mb-12">
       <p class="text-lg mb-6">
-        My research focuses on groundbreaking investigations into radioactivity and the discovery of new radioactive elements. Through meticulous experimental techniques and innovative methodologies, I aim to advance our understanding of radioactive phenomena and their applications in both physics and chemistry.
+        My research focuses on students’ preconceptions about digital systems and on connecting these findings with school practice. I am particularly interested in how learners understand abstract computing concepts, such as the internet, computer systems, hardware components, and operating systems, and how these ideas can inform the design of meaningful teaching materials.
       </p>
+
       <p class="text-lg mb-6">
-        This interdisciplinary approach has led to significant discoveries, including the isolation of polonium and radium, contributing to the foundation of modern nuclear physics and radiochemistry.
+        In my work, I combine empirical research on students’ thinking with the development and evaluation of instructional materials for lower secondary education. My aim is to support teaching that builds on students’ existing ideas, addresses common misconceptions, and helps teachers make complex digital technology topics accessible in the classroom.
       </p>
     </div>
 
-    <h2 class="text-2xl font-bold mb-6">Research Areas</h2>
-    <div class="grid gap-8 mb-12">
+    <List listTitle="Current Projects" listItems={[
       {
-        research_areas.map((area) => (
-          <div class="flex gap-6 items-start">
-            <BetterIcon>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                class="size-6 stroke-accent"
-              >
-                <path
+        title: "Project title",
+        type: "Project type, role, years",
+        link: "",
+        linkname: "",
+        description: "Short description of the project. Replace this placeholder with information about an ongoing research project, dissertation work, collaboration, grant, or development of teaching materials."
+      },
+      {
+        title: "Project title",
+        type: "Project type, role, years",
+        link: "",
+        linkname: "",
+        description: "Short description of another current project. You can duplicate or remove these items as needed."
+      }
+    ]} />
+
+    <List listTitle="Past Projects" listItems={[
+      {
+        title: "Project title",
+        type: "Project type, role, years",
+        link: "",
+        linkname: "",
+        description: "Short description of a completed project. Replace this placeholder with information about a finished research project, thesis, publication-related project, or completed teaching-material development."
+      },
+      {
+        title: "Project title",
+        type: "Project type, role, years",
+        link: "",
+        linkname: "",
+        description: "Short description of another past project. You can duplicate or remove these items as needed."
+      }
+    ]} />
+
+  </div>
+</Layout>                <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   d={RESEARCH_ICONS[area.field as keyof typeof RESEARCH_ICONS]?.path || RESEARCH_ICONS['computer-science'].path}
