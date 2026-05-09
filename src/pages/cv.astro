@@ -5,6 +5,7 @@ import CvTimeline from '@/components/ui/CvTimeline.astro'
 
 import type { Experience, Education, Publication } from '../types/cv'
 import List from '@/components/ui/List.astro'
+import PublicationsList from '@/components/ui/PublicationsList.astro'
 
 let orderedExperiences: Experience[] = []
 let orderedEducations: Education[] = []
@@ -42,9 +43,7 @@ if (education.length > 0) {
 }
 
 if (publications.length > 0) {
-  orderedPublications = publications.sort((a, b) => {
-    return orderElement(a, b)
-  })
+  orderedPublications = publications.slice(0, 5)
 }
 
 if (grants.length > 0) {
@@ -58,19 +57,6 @@ if (researchStays.length > 0) {
     return orderElement(a, b)
   })
 }
-
-const latestPublications = publications.slice(0, 5).map((publication) => ({
-  title: publication.title,
-  type: `${publication.journal} (${publication.time})`,
-  link: publication.link,
-  linkname:
-    publication.category === 'presentation'
-      ? 'View presentation'
-      : publication.category === 'poster'
-        ? 'View poster'
-        : 'Read paper',
-  description: publication.authors,
-}))
 ---
 
 <Layout title="CV">
@@ -91,10 +77,10 @@ const latestPublications = publications.slice(0, 5).map((publication) => ({
       />
     )}
 
-    {latestPublications.length > 0 && (
-      <List
+    {orderedPublications.length > 0 && (
+      <PublicationsList
         listTitle="Latest Publications"
-        listItems={latestPublications}
+        listItems={orderedPublications}
       />
     )}
 
