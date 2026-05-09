@@ -3,59 +3,66 @@ import Layout from '@/layouts/Layout.astro'
 import { experiences, education, skills, publications, grants, researchStays } from '../data/cv'
 import CvTimeline from '@/components/ui/CvTimeline.astro'
 
-import type { Experience, Education, Publication } from '../types/cv'
-import List from '@/components/ui/List.astro'
-import PublicationsList from '@/components/ui/PublicationsList.astro'
+const safeExperiences = experiences ?? []
+const safeEducation = education ?? []
+const safeSkills = skills ?? []
+const safePublications = publications ?? []
+const safeGrants = grants ?? []
+const safeResearchStays = researchStays ?? []
 
-let orderedExperiences: Experience[] = []
-let orderedEducations: Education[] = []
-let orderedPublications: Publication[] = []
-let orderedGrants = []
-let orderedResearchStays = []
+const presentValues = ['present', 'now', 'current', 'today']
 
-const orderElement = <T extends { time: string }>(a: T, b: T) => {
-  const presentValues = ['present', 'now', 'current', 'today']
+const getEndDate = (time) => {
+  if (!time) {
+    return ''
+  }
 
-  if (
-    presentValues.includes(
-      (a['time'] as string)?.split(' - ')[1]?.toLowerCase()
-    )
-  ) {
+  if (time.includes(' - ')) {
+    return time.split(' - ')[1]
+  }
+
+  if (time.includes('-')) {
+    return time.split('-')[1]
+  }
+
+  return time
+}
+
+const orderElement = (a, b) => {
+  const endA = getEndDate(a.time).toLowerCase()
+  const endB = getEndDate(b.time).toLowerCase()
+
+  if (presentValues.includes(endA)) {
     return -1
   }
 
-  const dateA = new Date((a['time'] as string)?.split(' - ')[1])
-  const dateB = new Date((b['time'] as string)?.split(' - ')[1])
+  if (presentValues.includes(endB)) {
+    return 1
+  }
+
+  const dateA = new Date(endA)
+  const dateB = new Date(endB)
 
   return dateB.getTime() - dateA.getTime()
 }
 
-if (experiences.length > 0) {
-  orderedExperiences = experiences.sort((a, b) => {
-    return orderElement(a, b)
-  })
-}
+const orderedExperiences = [...safeExperiences].sort(orderElement)
+const orderedGrants = [...safeGrants].sort(orderElement)
+const orderedResearchStays = [...safeResearchStays].sort(orderElement)
+const orderedEducations = [...safeEducation].sort(orderElement)
 
-if (education.length > 0) {
-  orderedEducations = education.sort((a, b) => {
-    return orderElement(a, b)
-  })
-}
+const latestPublications = safePublications.slice(0, 5)
 
-if (publications.length > 0) {
-  orderedPublications = publications.slice(0, 5)
-}
+const getPublicationButtonLabel = (category) => {
+  if (category === 'presentation') {
+    return 'View presentation'
+  }
 
-if (grants.length > 0) {
-  orderedGrants = grants.sort((a, b) => {
-    return orderElement(a, b)
-  })
-}
+  if (category === 'poster') {
+    return 'View poster'
+  }
 
-if (researchStays.length > 0) {
-  orderedResearchStays = researchStays.sort((a, b) => {
-    return orderElement(a, b)
-  })
+  return 'Read paper'
 }
 ---
 
@@ -77,11 +84,58 @@ if (researchStays.length > 0) {
       />
     )}
 
-    {orderedPublications.length > 0 && (
-      <PublicationsList
-        listTitle="Latest Publications"
-        listItems={orderedPublications}
-      />
+    {latestPublications.length > 0 && (
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold mb-6">Latest Publications</h2>
+
+        <div class="space-y-4">
+          {
+            latestPublications.map((publication) => (
+              <div class="card bg-base-200">
+                <div class="card-body p-4">
+                  <h3 class="text-base font-semibold leading-snug mb-1">
+                    {publication.link ? (
+                      <a
+                        href={publication.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-accent"
+                      >
+                        {publication.title}
+                      </a>
+                    ) : (
+                      publication.title
+                    )}
+                  </h3>
+
+                  <p class="text-xs mb-1 leading-snug">
+                    {publication.authors}
+                  </p>
+
+                  <p class="text-xs text-base-content/70 leading-snug">
+                    <span class="italic">{publication.journal}</span>
+                    {' '}
+                    ({publication.time})
+                  </p>
+
+                  {publication.link && (
+                    <div class="card-actions justify-end mt-2">
+                      <a
+                        href={publication.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-xs btn-secondary text-secondary-content"
+                      >
+                        {getPublicationButtonLabel(publication.category)}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
     )}
 
     {orderedResearchStays.length > 0 && (
@@ -98,11 +152,28 @@ if (researchStays.length > 0) {
       />
     )}
 
-    {skills.length > 0 && (
-      <List
-        listTitle="Skills"
-        listItems={skills}
-      />
+    {safeSkills.length > 0 && (
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold mb-6">Skills</h2>
+
+        <div class="space-y-4">
+          {
+            safeSkills.map((skill) => (
+              <div class="card bg-base-200">
+                <div class="card-body p-4">
+                  <h3 class="text-base font-semibold mb-1">
+                    {skill.title}
+                  </h3>
+
+                  <p class="text-sm text-base-content/80">
+                    {skill.description}
+                  </p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
     )}
   </div>
 </Layout>
