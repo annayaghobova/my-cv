@@ -35,7 +35,8 @@ export const social = {
 	arxiv: '',
 	orcid: 'https://orcid.org/0000-0002-2102-7515',
 	instagram: 'https://www.instagram.com/annayaghobova/',
-	wos: 'https://www.webofscience.com/wos/author/record/GZO-6590-2022'
+	wos: 'https://www.webofscience.com/wos/author/record/GZO-6590-2022',
+	researchgate: 'https://www.researchgate.net/profile/Anna-Yaghobova'
 }
 
 export const template = {
