@@ -3,69 +3,132 @@ import Layout from "@/layouts/Layout.astro";
 import { publications } from "@/data/cv";
 import { highlightAuthor } from "@/lib/utils";
 
-const papersByYear = publications.reduce((groups, paper) => {
-  const year = paper.time;
+type Publication = typeof publications[number];
 
-  if (!groups[year]) {
-    groups[year] = [];
+const groupByYear = (items: Publication[]) => {
+  return items.reduce((groups, item) => {
+    const year = item.time;
+
+    if (!groups[year]) {
+      groups[year] = [];
+    }
+
+    groups[year].push(item);
+
+    return groups;
+  }, {} as Record<string, Publication[]>);
+};
+
+const publicationSections = [
+  {
+    title: "Papers",
+    description: "",
+    items: publications.filter((item) => item.category === "paper" || !item.category),
+  },
+  {
+    title: "Presentations and Posters",
+    description: "",
+    items: publications.filter(
+      (item) => item.category === "presentation" || item.category === "poster"
+    ),
+  },
+];
+
+const sections = publicationSections
+  .filter((section) => section.items.length > 0)
+  .map((section) => {
+    const itemsByYear = groupByYear(section.items);
+    const sortedYears = Object.keys(itemsByYear).sort(
+      (a, b) => Number(b) - Number(a)
+    );
+
+    return {
+      ...section,
+      itemsByYear,
+      sortedYears,
+    };
+  });
+
+const getButtonLabel = (category: string | undefined) => {
+  if (category === "presentation") {
+    return "View Presentation";
   }
 
-  groups[year].push(paper);
+  if (category === "poster") {
+    return "View Poster";
+  }
 
-  return groups;
-}, {} as Record<string, typeof publications>);
-
-const sortedYears = Object.keys(papersByYear).sort(
-  (a, b) => Number(b) - Number(a)
-);
+  return "Read Paper";
+};
 ---
 
-<Layout title="Papers">
+<Layout title="Publications">
   <div class="prose max-w-none">
-    <h1 class="text-3xl font-bold mb-8">Publications</h1>
+    <h1 class="text-3xl font-bold mb-4">Publications</h1>
 
-    <div class="space-y-10">
+    <p class="text-lg mb-10">
+      This page lists my research papers. Below the papers, you can also find
+      selected conference presentations and posters.
+    </p>
+
+    <div class="space-y-14">
       {
-        sortedYears.map((year) => (
+        sections.map((section) => (
           <section>
-            <h2 class="text-2xl font-bold mb-4 border-b pb-2">{year}</h2>
+            <h2 class="text-2xl font-bold mb-6">{section.title}</h2>
 
-            <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <div class="space-y-10">
               {
-                papersByYear[year].map((paper) => (
-                  <div class="card bg-base-200">
-                    <div class="card-body p-4">
-                      <h3 class="text-base font-semibold leading-snug mb-1">
-                        <a
-                          href={paper.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="hover:text-accent"
-                        >
-                          {paper.title}
-                        </a>
-                      </h3>
+                section.sortedYears.map((year) => (
+                  <section>
+                    <h3 class="text-xl font-bold mb-4 border-b pb-2">{year}</h3>
 
-                      <p class="text-xs mb-1 leading-snug">
-                        <span set:html={highlightAuthor(paper.authors)} />
-                      </p>
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                      {
+                        section.itemsByYear[year].map((item) => (
+                          <div class="card bg-base-200">
+                            <div class="card-body p-4">
+                              <h4 class="text-base font-semibold leading-snug mb-1">
+                                {item.link ? (
+                                  <a
+                                    href={item.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="hover:text-accent"
+                                  >
+                                    {item.title}
+                                  </a>
+                                ) : (
+                                  item.title
+                                )}
+                              </h4>
 
-                      <p class="text-xs text-base-content/70 leading-snug">
-                        <span class="italic">{paper.journal}</span>
-                      </p>
+                              <p class="text-xs mb-1 leading-snug">
+                                <span set:html={highlightAuthor(item.authors)} />
+                              </p>
 
-                      <div class="card-actions justify-end mt-2">
-                        <a
-                          href={paper.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="btn btn-xs btn-secondary text-secondary-content"
-                        >
-                          Read Paper
-                        </a>
-                      </div>
+                              <p class="text-xs text-base-content/70 leading-snug">
+                                <span class="italic">{item.journal}</span>
+                              </p>
+
+                              {item.link && (
+                                <div class="card-actions justify-end mt-2">
+                                  <a
+                                    href={item.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn btn-xs btn-secondary text-secondary-content"
+                                  >
+                                    {getButtonLabel(item.category)}
+                                  </a>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      }
                     </div>
-                  </div>
+                  </section>
                 ))
               }
             </div>
