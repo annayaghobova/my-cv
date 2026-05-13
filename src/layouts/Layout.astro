@@ -26,13 +26,14 @@ const {
 <!doctype html>
 <html lang='en'>
 	<head>
-		{template.transitions && <ClientRouter /> }
 
-		<Head title={title} description={description} image={image} />
+  {template.transitions && <ClientRouter /> }
 
+  <Head title={title} description={description} image={image} />
 
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-	</head>
+</head>
 	<body>
 		<div class={`bg-base-100 drawer lg:drawer-open ${template.menu_left ? 'drawer-end' : ''}`}>
 			<input id='my-drawer' type='checkbox' class='drawer-toggle' />
